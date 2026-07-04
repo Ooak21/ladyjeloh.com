@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lady Jeloh · Boutique Gourmet Jello</title>
+<meta name="description" content="Lady Jeloh. Boutique gourmet jello. Artful designs, fresh fruit, jewel colors, and flavors worth the double-take. Coming soon.">
+<meta name="theme-color" content="#fff8f2">
+<meta property="og:title" content="Lady Jeloh · Boutique Gourmet Jello">
+<meta property="og:description" content="Artful jello. Fresh fruit, jewel colors, flavors worth the double-take. Coming soon.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ladyjeloh.com">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ff5da2'/%3E%3Cstop offset='.5' stop-color='%23ff9f1c'/%3E%3Cstop offset='1' stop-color='%238a5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M6 18c0-6 4-10 10-10s10 4 10 10a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4z' fill='url(%23g)'/%3E%3Cellipse cx='13' cy='14' rx='3' ry='2' fill='%23fff' opacity='.55'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  @font-face{font-family:'Brewla';src:url('assets/fonts/Brewla.woff') format('woff'),url('assets/fonts/Brewla.otf') format('opentype');font-display:swap}
+  :root{
+    --cream:#fff8f2;
+    --ink:#33203a;
+    --muted:#7a6a80;
+    --raspberry:#ff4f8b;
+    --tangerine:#ff9f1c;
+    --lime:#3fc27a;
+    --grape:#8a5cf6;
+    --lemon:#ffd23f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Montserrat',system-ui,sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    min-height:100svh;
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    position:relative;
+  }
+
+  body::before{
+    content:'';position:fixed;inset:0;z-index:0;
+    background:
+      radial-gradient(120% 90% at 50% -10%, #fffdfb 0%, rgba(255,248,242,0) 55%),
+      radial-gradient(90% 70% at 110% 120%, rgba(255,210,63,.10), transparent 60%);
+    pointer-events:none;
+  }
+
+  /* WebGL canvas + CSS blob fallback share this layer */
+  .stage{position:fixed;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+  #jello-canvas{
+    position:absolute;inset:0;width:100%;height:100%;
+    display:block;
+  }
+  .stage.fallback #jello-canvas{display:none}
+
+  .blob{
+    position:absolute;border-radius:50%;
+    filter:blur(46px);
+    mix-blend-mode:multiply;
+    opacity:.72;
+    will-change:transform;
+    display:none;
+  }
+  .stage.fallback .blob{display:block}
+  .blob::after{
+    content:'';position:absolute;top:14%;left:16%;width:34%;height:26%;
+    border-radius:50%;background:rgba(255,255,255,.6);filter:blur(10px);
+  }
+  .b1{width:44vmax;height:44vmax;left:-12vmax;top:-14vmax;background:radial-gradient(circle at 38% 34%,#ff7db0,var(--raspberry) 70%)}
+  .b2{width:40vmax;height:40vmax;right:-12vmax;top:-8vmax;background:radial-gradient(circle at 40% 36%,#ffc06a,var(--tangerine) 72%)}
+  .b3{width:38vmax;height:38vmax;left:-8vmax;bottom:-16vmax;background:radial-gradient(circle at 42% 38%,#7ce0a8,var(--lime) 72%)}
+  .b4{width:42vmax;height:42vmax;right:-14vmax;bottom:-16vmax;background:radial-gradient(circle at 40% 36%,#b79bff,var(--grape) 72%)}
+  .b5{width:26vmax;height:26vmax;left:52%;top:58%;background:radial-gradient(circle at 42% 40%,#ffe27a,var(--lemon) 74%);opacity:.6}
+
+  @media (prefers-reduced-motion:no-preference){
+    .b1{animation:float1 13s ease-in-out infinite}
+    .b2{animation:float2 15s ease-in-out infinite}
+    .b3{animation:float3 17s ease-in-out infinite}
+    .b4{animation:float2 14s ease-in-out infinite}
+    .b5{animation:float1 11s ease-in-out infinite}
+  }
+  @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(2.4vmax,3vmax) scale(1.06)}}
+  @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-3vmax,2.2vmax) scale(1.05)}}
+  @keyframes float3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(2.8vmax,-2.6vmax) scale(1.07)}}
+
+  main{
+    position:relative;z-index:2;
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:8vh 7vw;gap:0;
+  }
+  .panel{
+    background:rgba(255,255,255,.42);
+    backdrop-filter:blur(14px) saturate(1.1);
+    -webkit-backdrop-filter:blur(14px) saturate(1.1);
+    border:1px solid rgba(255,255,255,.65);
+    border-radius:34px;
+    padding:clamp(2.4rem,6vw,4.4rem) clamp(1.6rem,7vw,5rem);
+    box-shadow:0 40px 90px -50px rgba(80,30,80,.45);
+    max-width:760px;
+  }
+  .eyebrow{
+    font-size:clamp(.66rem,1.4vw,.78rem);font-weight:600;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:1.4rem;
+  }
+  .wordmark{
+    font-family:'Brewla',Georgia,serif;font-weight:400;line-height:1.0;
+    font-size:clamp(3.2rem,13vw,7rem);letter-spacing:-.01em;
+    color:var(--ink);
+  }
+  .wordmark .pop{
+    display:inline-block;                 /* inline-block so the wobble transform applies */
+    transform-origin:50% 88%;             /* anchor near the baseline, like jello on a plate */
+    background:linear-gradient(100deg,var(--raspberry) 0%,var(--tangerine) 34%,var(--lime) 62%,var(--grape) 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .wordmark .pop{animation:ohWobble 3.6s ease-in-out infinite}
+  }
+  @keyframes ohWobble{
+    0%,100%{transform:rotate(0deg)    scale(1,1)}
+    25%    {transform:rotate(-3deg)   scale(1.03,0.97)}
+    50%    {transform:rotate(0.6deg)  scale(0.99,1.02)}
+    75%    {transform:rotate(3deg)    scale(1.03,0.97)}
+  }
+  .tagline{
+    font-size:clamp(1rem,2.5vw,1.28rem);font-weight:300;line-height:1.55;color:#4c3a52;
+    max-width:34ch;margin:1.9rem auto 0;
+  }
+  .soon{
+    display:inline-flex;align-items:center;gap:.6rem;margin-top:2.2rem;
+    font-size:.72rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--ink);
+    background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.8);
+    padding:.7rem 1.25rem;border-radius:999px;
+  }
+  .soon .dot{width:8px;height:8px;border-radius:50%;
+    background:linear-gradient(135deg,var(--raspberry),var(--grape))}
+  .contact{
+    margin-top:2.4rem;display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;align-items:center;justify-content:center;
+    font-size:.9rem;font-weight:500;
+  }
+  .contact a{
+    color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;
+    padding:.35rem .2rem;border-bottom:1.5px solid transparent;transition:border-color .2s,color .2s;
+  }
+  .contact a:hover{color:var(--raspberry);border-color:var(--raspberry)}
+  .contact a.off{opacity:.5;pointer-events:none;cursor:default}
+  .contact svg{width:17px;height:17px}
+  .sep{color:#d9c9de}
+
+  footer{
+    position:relative;z-index:2;text-align:center;
+    padding:1.6rem 7vw 2rem;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  }
+
+  @media (max-width:520px){
+    .contact .sep{display:none}
+    .contact{flex-direction:column;gap:.9rem}
+  }
+</style>
+</head>
+<body>
+  <div class="stage" id="stage" aria-hidden="true">
+    <canvas id="jello-canvas"></canvas>
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+    <span class="blob b3"></span>
+    <span class="blob b4"></span>
+    <span class="blob b5"></span>
+  </div>
+
+  <main>
+    <div class="panel">
+      <div class="eyebrow">Boutique Gourmet Jello</div>
+      <h1 class="wordmark">Lady Jel<span class="pop">oh</span></h1>
+      <p class="tagline">Artful jello. Fresh fruit, jewel colors, and flavors worth the double-take.</p>
+      <div class="soon"><span class="dot"></span> Coming Soon</div>
+
+      <div class="contact">
+        <a href="mailto:hello@ladyjeloh.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          hello@ladyjeloh.com
+        </a>
+        <span class="sep">·</span>
+        <a class="off" aria-label="Instagram (coming soon)" title="Coming soon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          @ladyjeloh
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>Lady Jeloh · Boutique Gourmet Jello</footer>
+
+  <script type="module">
+    import * as THREE from 'https://esm.sh/three@0.170.0';
+    (function () {
+
+    const stage   = document.getElementById('stage');
+    const canvas  = document.getElementById('jello-canvas');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ── WebGL probe ─────────────────────────────────────────── */
+    function hasWebGL() {
+      try {
+        const c = document.createElement('canvas');
+        return !!(c.getContext('webgl2') || c.getContext('webgl') || c.getContext('experimental-webgl'));
+      } catch { return false; }
+    }
+    if (!hasWebGL()) { stage.classList.add('fallback'); return; }
+
+    /* ── Renderer (mobile-safe DPR cap) ────────────────────── */
+    const isMobile = matchMedia('(pointer: coarse)').matches;
+    const maxDpr   = isMobile ? 1.5 : 2;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: false,
+      antialias: false,
+      powerPreference: 'low-power',
+      depth: false,
+      stencil: false,
+    });
+    renderer.setClearColor(0xfff8f2, 1);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
+
+    /* ── Scene: single fullscreen quad ─────────────────────── */
+    const scene  = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+    const uniforms = {
+      uTime:       { value: 0 },
+      uResolution: { value: new THREE.Vector2(1, 1) },
+      uSpeed:      { value: reduced ? 0 : 1 },
+    };
+
+    const material = new THREE.ShaderMaterial({
+      uniforms,
+      vertexShader: /* glsl */`
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: /* glsl */`
+        precision highp float;
+
+        uniform float uTime;
+        uniform vec2  uResolution;
+        uniform float uSpeed;
+
+        varying vec2 vUv;
+
+        /* Lady Jeloh jewel palette (sRGB → linear) */
+        const vec3 CREAM     = vec3(1.000, 0.973, 0.949);
+        const vec3 RASPBERRY = vec3(1.000, 0.310, 0.545);
+        const vec3 TANGERINE = vec3(1.000, 0.624, 0.110);
+        const vec3 LIME      = vec3(0.247, 0.761, 0.478);
+        const vec3 GRAPE     = vec3(0.541, 0.361, 0.965);
+        const vec3 LEMON     = vec3(1.000, 0.824, 0.247);
+
+        /* ── Hash / noise / FBM ───────────────────────────── */
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+        }
+
+        float noise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          f = f * f * (3.0 - 2.0 * f);
+          float a = hash(i);
+          float b = hash(i + vec2(1.0, 0.0));
+          float c = hash(i + vec2(0.0, 1.0));
+          float d = hash(i + vec2(1.0, 1.0));
+          return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+        }
+
+        float fbm(vec2 p) {
+          float v = 0.0;
+          float a = 0.5;
+          mat2 rot = mat2(0.80, 0.60, -0.60, 0.80);
+          for (int i = 0; i < 5; i++) {
+            v += a * noise(p);
+            p = rot * p * 2.02 + vec2(17.0, 9.0);
+            a *= 0.5;
+          }
+          return v;
+        }
+
+        /* Domain warp — gelatinous flow */
+        vec2 warp(vec2 p, float t) {
+          vec2 q = vec2(
+            fbm(p + vec2(0.0, 0.0) + t * 0.07),
+            fbm(p + vec2(5.2, 1.3) - t * 0.05)
+          );
+          vec2 r = vec2(
+            fbm(p + 4.0 * q + vec2(1.7, 9.2) + t * 0.04),
+            fbm(p + 4.0 * q + vec2(8.3, 2.8) - t * 0.03)
+          );
+          return p + 2.2 * r;
+        }
+
+        /* Jewel-tone palette from scalar field */
+        vec3 jewelPalette(float t) {
+          t = fract(t);
+          float seg = t * 5.0;
+          float f = fract(seg);
+          int i = int(floor(seg));
+          if (i == 0) return mix(RASPBERRY, TANGERINE, smoothstep(0.0, 1.0, f));
+          if (i == 1) return mix(TANGERINE, LEMON,     smoothstep(0.0, 1.0, f));
+          if (i == 2) return mix(LEMON,     LIME,      smoothstep(0.0, 1.0, f));
+          if (i == 3) return mix(LIME,       GRAPE,     smoothstep(0.0, 1.0, f));
+          return mix(GRAPE, RASPBERRY, smoothstep(0.0, 1.0, f));
+        }
+
+        /* Multiply-blend approximation (like layered gelatin) */
+        vec3 multiplyBlend(vec3 base, vec3 layer, float amount) {
+          return mix(base, base * layer, amount);
+        }
+
+        void main() {
+          float aspect = uResolution.x / uResolution.y;
+          vec2 uv = vUv;
+          vec2 p  = (uv - 0.5) * vec2(aspect, 1.0);
+
+          float t = uTime * uSpeed;
+
+          /* Keep center calm for frosted card legibility */
+          float centerCalm = smoothstep(0.0, 0.55, length(p * vec2(0.85, 1.0)));
+
+          /* Domain-warped noise layers at different scales */
+          vec2 w1 = warp(p * 1.15 + vec2(0.0,  t * 0.018), t);
+          vec2 w2 = warp(p * 0.85 + vec2(3.1, -t * 0.014), t * 0.9 + 2.0);
+          vec2 w3 = warp(p * 1.45 + vec2(-2.4, t * 0.011), t * 1.1 + 4.0);
+
+          float n1 = fbm(w1);
+          float n2 = fbm(w2 + 1.7);
+          float n3 = fbm(w3 + 3.3);
+
+          /* Blob masks — push color to edges/corners */
+          float blob1 = smoothstep(0.28, 0.92, 1.0 - length(p - vec2(-0.42,  0.38) * aspect) + n1 * 0.35);
+          float blob2 = smoothstep(0.28, 0.92, 1.0 - length(p - vec2( 0.48,  0.32))              + n2 * 0.32);
+          float blob3 = smoothstep(0.28, 0.92, 1.0 - length(p - vec2(-0.36, -0.40))              + n2 * 0.34);
+          float blob4 = smoothstep(0.28, 0.92, 1.0 - length(p - vec2( 0.44, -0.36) * aspect) + n3 * 0.33);
+          float blob5 = smoothstep(0.35, 0.88, 1.0 - length(p - vec2( 0.08, -0.06))              + n1 * 0.28) * 0.65;
+
+          /* Slow hue drift */
+          float drift = t * 0.018 + n3 * 0.22;
+
+          vec3 color = CREAM;
+
+          color = multiplyBlend(color, jewelPalette(drift + n1 * 0.55), blob1 * 0.62 * centerCalm);
+          color = multiplyBlend(color, jewelPalette(drift + 0.22 + n2 * 0.5), blob2 * 0.58 * centerCalm);
+          color = multiplyBlend(color, jewelPalette(drift + 0.44 + n2 * 0.48), blob3 * 0.56 * centerCalm);
+          color = multiplyBlend(color, jewelPalette(drift + 0.66 + n3 * 0.52), blob4 * 0.60 * centerCalm);
+          color = multiplyBlend(color, jewelPalette(drift + 0.88 + n1 * 0.4),  blob5 * 0.45 * centerCalm);
+
+          /* Gelatin sheen — soft specular highlights */
+          float sheen = pow(max(0.0, n1 * 0.55 + n2 * 0.35), 3.2);
+          color += vec3(1.0) * sheen * 0.07 * centerCalm;
+
+          /* Gentle vignette */
+          float vig = smoothstep(1.25, 0.25, length(p));
+          color = mix(CREAM, color, 0.55 + 0.45 * vig);
+
+          /* Subtle overall intensity cap — premium, not gaudy */
+          color = mix(CREAM, color, 0.78);
+
+          gl_FragColor = vec4(color, 1.0);
+        }
+      `,
+      depthTest: false,
+      depthWrite: false,
+    });
+
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+    scene.add(mesh);
+
+    /* ── Resize ────────────────────────────────────────────── */
+    function resize() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      renderer.setSize(w, h, false);
+      uniforms.uResolution.value.set(w, h);
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    /* ── prefers-reduced-motion live toggle ────────────────── */
+    const motionMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    motionMq.addEventListener('change', (e) => {
+      uniforms.uSpeed.value = e.matches ? 0 : 1;
+    });
+
+    /* ── Animation loop (pause when tab hidden) ────────────── */
+    const clock = new THREE.Clock();
+    let raf = 0;
+
+    function frame() {
+      raf = requestAnimationFrame(frame);
+      uniforms.uTime.value = clock.getElapsedTime();
+      renderer.render(scene, camera);
+    }
+
+    function start() {
+      if (!raf) frame();
+    }
+    function stop() {
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      document.hidden ? stop() : start();
+    });
+
+    start();
+    })();
+  </script>
+</body>
+</html>
